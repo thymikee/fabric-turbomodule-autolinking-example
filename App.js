@@ -64,7 +64,7 @@ const App: () => Node = () => {
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ColoredView
-        color="#FF2299"
+        color="#123fff"
         style={{marginLeft: 10, marginTop: 20, width: 100, height: 100}}
       />
       <ScrollView

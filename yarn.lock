@@ -2828,7 +2828,7 @@ event-target-shim@^5.0.0, event-target-shim@^5.0.1:
   integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
 
 example-component@../example-component:
-  version "0.0.1"
+  version "0.0.2"
 
 exec-sh@^0.3.2:
   version "0.3.6"
