@@ -17,6 +17,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import ColoredView from 'example-component/src/index';
 
 import {
   Colors,
@@ -62,6 +63,10 @@ const App: () => Node = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <ColoredView
+        color="#FF2299"
+        style={{marginLeft: 10, marginTop: 20, width: 100, height: 100}}
+      />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
