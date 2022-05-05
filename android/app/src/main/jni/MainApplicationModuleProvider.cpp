@@ -1,6 +1,7 @@
 #include "MainApplicationModuleProvider.h"
 
 #include <rncore.h>
+#include <rncli.h>
 
 namespace facebook {
 namespace react {
@@ -16,7 +17,8 @@ std::shared_ptr<TurboModule> MainApplicationModuleProvider(
   // if (module != nullptr) {
   //    return module;
   // }
-  // return rncore_ModuleProvider(moduleName, params);
+
+  // Module providers autolinked by RN CLI  
   return rncore_ModuleProvider(moduleName, params);
 }
 
