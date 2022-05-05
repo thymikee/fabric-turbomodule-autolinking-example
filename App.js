@@ -26,6 +26,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {Screen, ScreenContainer} from 'react-native-screens';
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -67,6 +68,18 @@ const App: () => Node = () => {
         color="#123fff"
         style={{marginLeft: 10, marginTop: 20, width: 100, height: 100}}
       />
+
+      <ScreenContainer>
+        <Screen>
+          <Text>tab1</Text>
+        </Screen>
+        <Screen activityState={2}>
+          <Text>tab2</Text>
+        </Screen>
+        <Screen>
+          <Text>tab3</Text>
+        </Screen>
+      </ScreenContainer>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>

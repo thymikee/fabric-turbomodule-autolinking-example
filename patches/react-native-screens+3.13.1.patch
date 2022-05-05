@@ -1,0 +1,65 @@
+diff --git a/node_modules/react-native-screens/android/build.gradle b/node_modules/react-native-screens/android/build.gradle
+index 5097a1a..eed22ae 100644
+--- a/node_modules/react-native-screens/android/build.gradle
++++ b/node_modules/react-native-screens/android/build.gradle
+@@ -41,23 +41,6 @@ android {
+         versionCode 1
+         versionName "1.0"
+         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+-        if (isNewArchitectureEnabled()) {
+-            var appProject = rootProject.allprojects.find {it.plugins.hasPlugin('com.android.application')}
+-            externalNativeBuild {
+-                ndkBuild {
+-                    arguments "APP_PLATFORM=android-21",
+-                            "APP_STL=c++_shared",
+-                            "NDK_TOOLCHAIN_VERSION=clang",
+-                            "GENERATED_SRC_DIR=${appProject.buildDir}/generated/source",
+-                            "PROJECT_BUILD_DIR=${appProject.buildDir}",
+-                            "REACT_ANDROID_DIR=${appProject.rootDir}/../node_modules/react-native/ReactAndroid",
+-                            "REACT_ANDROID_BUILD_DIR=${appProject.rootDir}/../node_modules/react-native/ReactAndroid/build"
+-                    cFlags "-Wall", "-Werror", "-fexceptions", "-frtti", "-DWITH_INSPECTOR=1"
+-                    cppFlags "-std=c++17"
+-                    targets "rnscreens_modules"
+-                }
+-            }
+-        }
+     }
+     lintOptions {
+         abortOnError false
+@@ -66,13 +49,6 @@ android {
+         sourceCompatibility JavaVersion.VERSION_1_8
+         targetCompatibility JavaVersion.VERSION_1_8
+     }
+-    if (isNewArchitectureEnabled()) {
+-        externalNativeBuild {
+-            ndkBuild {
+-                path "src/main/jni/Android.mk"
+-            }
+-        }
+-    }
+     packagingOptions {
+         // For some reason gradle only complains about the duplicated version of libreact_render libraries
+         // while there are more libraries copied in intermediates folder of the lib build directory, we exlude
+diff --git a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/RNScreensPackage.kt b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/RNScreensPackage.kt
+index d363350..972f874 100644
+--- a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/RNScreensPackage.kt
++++ b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/RNScreensPackage.kt
+@@ -7,16 +7,8 @@ import com.facebook.react.uimanager.ViewManager
+ import com.facebook.soloader.SoLoader
+ 
+ class RNScreensPackage : ReactPackage {
+-    override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
+-        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+-            // For Fabric, we load c++ native library here, this triggers screen's Fabric
+-            // component registration which is necessary in order to avoid asking users
+-            // to manually add init calls in their application code.
+-            // This should no longer be needed if RN's autolink mechanism has Fabric support
+-            SoLoader.loadLibrary("rnscreens_modules")
+-        }
+-        return emptyList<NativeModule>()
+-    }
++    override fun createNativeModules(reactContext: ReactApplicationContext) =
++        emptyList<NativeModule>()
+ 
+     override fun createViewManagers(reactContext: ReactApplicationContext) =
+         listOf<ViewManager<*, *>>(
