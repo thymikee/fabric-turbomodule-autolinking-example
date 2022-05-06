@@ -16,8 +16,10 @@ import {
   Text,
   useColorScheme,
   View,
+  Button,
 } from 'react-native';
 import ColoredView from 'example-component/src/index';
+import Calculator from 'example-library/src/index';
 
 import {
   Colors,
@@ -56,6 +58,7 @@ const Section = ({children, title}): Node => {
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [currentResult, setResult] = React.useState<number | null>(null);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -68,7 +71,16 @@ const App: () => Node = () => {
         color="#123fff"
         style={{marginLeft: 10, marginTop: 20, width: 100, height: 100}}
       />
-
+      <Text style={{marginLeft: 20, marginTop: 20}}>
+        3+7={currentResult ?? '??'}
+      </Text>
+      <Button
+        title="Compute"
+        onPress={async () => {
+          const result = await Calculator.add(3, 7);
+          setResult(result);
+        }}
+      />
       <ScreenContainer>
         <Screen>
           <Text>tab1</Text>

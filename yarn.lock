@@ -2835,6 +2835,9 @@ event-target-shim@^5.0.0, event-target-shim@^5.0.1:
 example-component@../example-component:
   version "0.0.2"
 
+example-library@../example-library/example-library:
+  version "0.0.1"
+
 exec-sh@^0.3.2:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/exec-sh/-/exec-sh-0.3.6.tgz#ff264f9e325519a60cb5e273692943483cca63bc"
