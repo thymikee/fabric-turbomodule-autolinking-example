@@ -7,9 +7,7 @@
  */
 
 import React from 'react';
-import type {Node} from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -28,9 +26,14 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {Screen, ScreenContainer} from 'react-native-screens';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  useSafeAreaFrame,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
-const Section = ({children, title}): Node => {
+const Section = ({children, title}) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -56,8 +59,22 @@ const Section = ({children, title}): Node => {
   );
 };
 
-const App: () => Node = () => {
+const Stack = createNativeStackNavigator();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Home2" component={HomeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+function HomeScreen() {
   const isDarkMode = useColorScheme() === 'dark';
+  const {navigate} = useNavigation();
   const [currentResult, setResult] = React.useState<number | null>(null);
 
   const backgroundStyle = {
@@ -65,15 +82,12 @@ const App: () => Node = () => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ColoredView
         color="#123fff"
         style={{marginLeft: 10, marginTop: 20, width: 100, height: 100}}
       />
-      <Text style={{marginLeft: 20, marginTop: 20}}>
-        3+7={currentResult ?? '??'}
-      </Text>
       <Button
         title="Compute"
         onPress={async () => {
@@ -81,17 +95,15 @@ const App: () => Node = () => {
           setResult(result);
         }}
       />
-      <ScreenContainer>
-        <Screen>
-          <Text>tab1</Text>
-        </Screen>
-        <Screen activityState={2}>
-          <Text>tab2</Text>
-        </Screen>
-        <Screen>
-          <Text>tab3</Text>
-        </Screen>
-      </ScreenContainer>
+      <Text style={{marginLeft: 20, marginTop: 20}}>
+        3+7={currentResult ?? '??'}
+      </Text>
+      <Button
+        title="Navigate to Home2"
+        onPress={async () => {
+          navigate('Home2');
+        }}
+      />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
@@ -116,9 +128,9 @@ const App: () => Node = () => {
           <LearnMoreLinks />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   sectionContainer: {
