@@ -66,17 +66,41 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Home2" component={HomeScreen} />
+        <Stack.Screen name="Screen2" component={Screen2} />
+        <Stack.Screen name="Screen3" component={Screen3} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
+function Screen2() {
+  const {navigate} = useNavigation();
+  return (
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <Text style={{textAlign: 'center', paddingBottom: 20}}>Screen 2</Text>
+      <Button
+        title="Navigate to Screen 3"
+        onPress={async () => {
+          navigate('Screen3');
+        }}
+      />
+    </View>
+  );
+}
+
+function Screen3() {
+  return (
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <Text style={{textAlign: 'center'}}>Screen 3</Text>
+    </View>
+  );
+}
+
 function HomeScreen() {
   const isDarkMode = useColorScheme() === 'dark';
   const {navigate} = useNavigation();
   const [currentResult, setResult] = React.useState<number | null>(null);
-
+  const frame = useSafeAreaFrame();
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -84,50 +108,40 @@ function HomeScreen() {
   return (
     <>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ColoredView
-        color="#123fff"
-        style={{marginLeft: 10, marginTop: 20, width: 100, height: 100}}
-      />
-      <Button
-        title="Compute"
-        onPress={async () => {
-          const result = await Calculator.add(3, 7);
-          setResult(result);
-        }}
-      />
-      <Text style={{marginLeft: 20, marginTop: 20}}>
-        3+7={currentResult ?? '??'}
-      </Text>
-      <Button
-        title="Navigate to Home2"
-        onPress={async () => {
-          navigate('Home2');
-        }}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+      <Section title="Custom Fabric component">
+        <ColoredView
+          color="#123fff"
+          style={{marginLeft: 10, marginTop: 20, width: 100, height: 100}}
+        />
+      </Section>
+      <Section title="Custom TurboModule">
+        <View>
+          <Button
+            title="Compute"
+            onPress={async () => {
+              const result = await Calculator.add(3, 7);
+              setResult(result);
+            }}
+          />
+          <Text>3+7={currentResult ?? '??'}</Text>
         </View>
-      </ScrollView>
+      </Section>
+      <Section title="SafeAreaContext data">
+        <View>
+          <Text>Frame height: {frame.height}</Text>
+          <Text>Frame width: {frame.width}</Text>
+          <Text>Frame x: {frame.x}</Text>
+          <Text>Frame y: {frame.y}</Text>
+        </View>
+      </Section>
+      <Section title="NativeStack navigation">
+        <Button
+          title="Navigate to Screen 2"
+          onPress={async () => {
+            navigate('Screen2');
+          }}
+        />
+      </Section>
     </>
   );
 }
