@@ -18,20 +18,11 @@ import {
 } from 'react-native';
 import ColoredView from 'example-component/src/index';
 import Calculator from 'example-library/src/index';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {
-  useSafeAreaFrame,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import {useSafeAreaFrame} from 'react-native-safe-area-context';
+import PagerView from 'react-native-pager-view';
 
 const Section = ({children, title}) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -65,9 +56,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Autolinking Example" component={HomeScreen} />
         <Stack.Screen name="Screen2" component={Screen2} />
         <Stack.Screen name="Screen3" component={Screen3} />
+        <Stack.Screen name="Screen4" component={Screen4} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -87,11 +79,32 @@ function Screen2() {
     </View>
   );
 }
-
 function Screen3() {
+  const {navigate} = useNavigation();
   return (
     <View style={{flex: 1, justifyContent: 'center'}}>
-      <Text style={{textAlign: 'center'}}>Screen 3</Text>
+      <Text style={{textAlign: 'center', paddingBottom: 20}}>Screen 3</Text>
+      <Button
+        title="Navigate to Screen 4"
+        onPress={async () => {
+          navigate('Screen4');
+        }}
+      />
+    </View>
+  );
+}
+
+function Screen4() {
+  const {navigate} = useNavigation();
+  return (
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <Text style={{textAlign: 'center'}}>Screen 4</Text>
+      <Button
+        title="Navigate to HomeScreen"
+        onPress={async () => {
+          navigate('Autolinking Example');
+        }}
+      />
     </View>
   );
 }
@@ -101,20 +114,21 @@ function HomeScreen() {
   const {navigate} = useNavigation();
   const [currentResult, setResult] = React.useState<number | null>(null);
   const frame = useSafeAreaFrame();
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   return (
-    <>
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Section title="Custom Fabric component">
-        <ColoredView
-          color="#123fff"
-          style={{marginLeft: 10, marginTop: 20, width: 100, height: 100}}
-        />
+      <Section title="ColoredView Fabric component">
+        <ColoredView color="#123fff" style={{width: 100, height: 100}} />
+        <ColoredView color="#51f201" style={{width: 100, height: 100}} />
       </Section>
-      <Section title="Custom TurboModule">
+      <Section title="Calculator TurboModule">
         <View>
           <Button
             title="Compute"
@@ -142,7 +156,14 @@ function HomeScreen() {
           }}
         />
       </Section>
-    </>
+      <Section title="Not-yet Fabric ready lib">
+        <PagerView style={{width: 50, height: 50}} initialPage={0}>
+          <View key="1">
+            <Text>First page</Text>
+          </View>
+        </PagerView>
+      </Section>
+    </ScrollView>
   );
 }
 
