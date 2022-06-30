@@ -8,11 +8,13 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "perf-test": "./reassure-tests.sh"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
+    "@testing-library/react-native": "^10.1.1",
     "example-component": "../example-component",
     "example-library": "../example-library/example-library",
     "react": "17.0.2",
@@ -21,7 +23,8 @@
     "react-native-google-mobile-ads": "^6.2.5",
     "react-native-pager-view": "^5.4.16",
     "react-native-safe-area-context": "^4.2.5",
-    "react-native-screens": "^3.13.1"
+    "react-native-screens": "^3.13.1",
+    "reassure": "^0.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
